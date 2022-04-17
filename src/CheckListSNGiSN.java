@@ -1,9 +1,39 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class CheckListSNGiSN {
     public static void main(String[] args) {
+
+        String userName,password,url,driver;
+        Connection con;
+        Statement st;
+
+        userName="base_user";
+        password="base_pass";
+        url="jdbc:mariadb://192.168.100.2:3306/check_list_sngisn";
+        driver="org.mariadb.jdbc.Driver";
+        try {
+            Class.forName(driver);
+            con= DriverManager.getConnection(url, userName, password);
+            st=con.createStatement();
+            ResultSet resultSet = st.executeQuery("SELECT name, address FROM objects;");
+            while (resultSet.next()) {
+                String val1 = resultSet.getString(1); // by column index
+                String val2 = resultSet.getString(2); // by column index
+                System.out.println(val1 + "   " + val2);
+                // ... use val1 and val2 ...
+            }
+            System.out.println("Connection is successful");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
 
         JFrame mainFrame;
         JButton buttonMaster;
