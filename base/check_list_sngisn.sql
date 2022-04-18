@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Апр 18 2022 г., 04:03
+-- Время создания: Апр 19 2022 г., 04:00
 -- Версия сервера: 5.5.57-MariaDB
 -- Версия PHP: 5.6.40
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `login` (
   `id` int(11) NOT NULL,
+  `id_position` int(11) NOT NULL,
   `login` text NOT NULL,
   `password` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -38,9 +39,9 @@ CREATE TABLE `login` (
 -- Дамп данных таблицы `login`
 --
 
-INSERT INTO `login` (`id`, `login`, `password`) VALUES
-(1, 'kluibik', '123'),
-(2, 'shuk', 'qwe');
+INSERT INTO `login` (`id`, `id_position`, `login`, `password`) VALUES
+(1, 1, 'kluibik', '123'),
+(2, 2, 'shuk', 'qwe');
 
 -- --------------------------------------------------------
 

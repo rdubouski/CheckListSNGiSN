@@ -1,77 +1,110 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class CheckListSNGiSN {
     public static void main(String[] args) {
 
-        String userName,password,url,driver;
-        Connection con;
-        Statement st;
-
-        userName="base_user";
-        password="base_pass";
-        url="jdbc:mariadb://192.168.100.2:3306/check_list_sngisn";
-        driver="org.mariadb.jdbc.Driver";
-        try {
-            Class.forName(driver);
-            con= DriverManager.getConnection(url, userName, password);
-            st=con.createStatement();
-            ResultSet resultSet = st.executeQuery("SELECT name, address FROM objects;");
-            while (resultSet.next()) {
-                String val1 = resultSet.getString(1); // by column index
-                String val2 = resultSet.getString(2); // by column index
-                System.out.println(val1 + "   " + val2);
-                // ... use val1 and val2 ...
-            }
-            System.out.println("Connection is successful");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
+        final ResultSet[] res = {null};
+        final String[] slogin = {null};
+        final String[] spass = {null};
 
         JFrame mainFrame;
-        JButton buttonMaster;
-        JButton buttonWorker;
+        JButton ok;
+        JButton cancel;
+        JTextField login;
+        JPasswordField pass;
+        JLabel llogin;
+        JLabel lpass;
+
 
         mainFrame = new JFrame();
         mainFrame.setTitle("Чек лист СНГиСН");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(400, 200);
+        mainFrame.setSize(200, 250);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setResizable(false);
         mainFrame.setLayout(null);
 
-        buttonMaster = new JButton("Мастер");
-        buttonMaster.setBounds(50, 50, 100, 50);
-        buttonMaster.addActionListener(new ActionListener() {
+        llogin = new JLabel();
+        llogin.setBounds(10, 25, 100, 20);
+        llogin.setText("Логин");
+
+        login = new JTextField();
+        login.setBounds(10, 50, 170, 20);
+
+        lpass = new JLabel();
+        lpass.setBounds(10, 75, 100, 20);
+        lpass.setText("Пароль");
+
+        pass = new JPasswordField();
+        pass.setBounds(10, 100, 170, 20);
+
+        ok = new JButton("OK");
+        ok.setBounds(10, 150, 80, 20);
+        ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainFrame.setVisible(false);
-                new Master();
+
+                String e1, e2, e3;
+                boolean chek = false;
+
+                slogin[0] = login.getText();
+                spass[0] = String.copyValueOf(pass.getPassword());
+                System.out.println(slogin[0] + "  " + spass[0]);
+                res[0] = DBConnection.getdatabase("SELECT id_position, login, password FROM login;");
+                while (true) {
+                    try {
+                        if (!res[0].next()) break;
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        e1 = res[0].getString("id_position");
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        e2 = res[0].getString("login");
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        e3 = res[0].getString("password");
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                    if (e2.equals(slogin[0]) && e3.equals(spass[0])) {
+                        mainFrame.setVisible(false);
+                        new Master();
+                        chek = true;
+                    }
+                }
+                if (!chek) {
+                    System.out.println("wrong password");
+                }
             }
         });
-        buttonWorker = new JButton("Рабочий");
-        buttonWorker.setBounds(200, 50, 100, 50);
-        buttonWorker.addActionListener(new ActionListener() {
+        cancel = new JButton("Cancel");
+        cancel.setBounds(100, 150, 80, 20);
+        cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,
-                        "В разработке!",
-                        "Чек лист СНГиСН",
-                        JOptionPane.INFORMATION_MESSAGE);
-                //mainFrame.setVisible(false);
-                //new Worker();
+                mainFrame.dispose();
+                System.exit(0);
             }
         });
 
-        mainFrame.add(buttonMaster);
-        mainFrame.add(buttonWorker);
+        mainFrame.add(llogin);
+        mainFrame.add(login);
+        mainFrame.add(lpass);
+        mainFrame.add(pass);
+        mainFrame.add(ok);
+        mainFrame.add(cancel);
         mainFrame.setVisible(true);
     }
 }
