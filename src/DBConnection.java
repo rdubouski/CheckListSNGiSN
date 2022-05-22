@@ -34,4 +34,15 @@ public class DBConnection {
         }
         return null;
     }
+
+    public static void exequery(String sqlquery) {
+        try {
+            Connection dbConnection = getDBConnect();
+            Statement stat = dbConnection.createStatement();
+            stat.executeUpdate(sqlquery);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 
 public class CheckListSNGiSN {
-    public static void main(String[] args) {
-
-        final ResultSet[] res = {null};
+    public static void main(String[] args) throws SQLException {
+        new Master();
+        /*final ResultSet[] res = {null};
         final String[] slogin = {null};
         final String[] spass = {null};
 
@@ -80,7 +80,10 @@ public class CheckListSNGiSN {
 
                     if (e2.equals(slogin[0]) && e3.equals(spass[0])) {
                         mainFrame.setVisible(false);
-                        new Master();
+                        System.out.println(e1);
+                        if (e1.equals("1")) {
+                            new Master_menu();
+                        } else new Worker();
                         chek = true;
                     }
                 }
@@ -105,6 +108,6 @@ public class CheckListSNGiSN {
         mainFrame.add(pass);
         mainFrame.add(ok);
         mainFrame.add(cancel);
-        mainFrame.setVisible(true);
+        mainFrame.setVisible(true);*/
     }
 }

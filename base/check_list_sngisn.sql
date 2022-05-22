@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Апр 19 2022 г., 04:00
+-- Время создания: Май 23 2022 г., 05:21
 -- Версия сервера: 5.5.57-MariaDB
 -- Версия PHP: 5.6.40
 
@@ -32,16 +32,19 @@ CREATE TABLE `login` (
   `id` int(11) NOT NULL,
   `id_position` int(11) NOT NULL,
   `login` text NOT NULL,
-  `password` text NOT NULL
+  `password` text NOT NULL,
+  `fio` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `login`
 --
 
-INSERT INTO `login` (`id`, `id_position`, `login`, `password`) VALUES
-(1, 1, 'kluibik', '123'),
-(2, 2, 'shuk', 'qwe');
+INSERT INTO `login` (`id`, `id_position`, `login`, `password`, `fio`) VALUES
+(1, 1, 'kluibik', '123', 'Клыбик'),
+(2, 2, 'shuk', 'qwe', 'Шук'),
+(3, 1, 'laht', '321', 'Лахт'),
+(4, 2, 'batov', '123', 'Батов');
 
 -- --------------------------------------------------------
 
@@ -87,44 +90,79 @@ INSERT INTO `position` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `questions`
+--
+
+INSERT INTO `questions` (`id`, `name`) VALUES
+(1, 'Перед открытием двери убедиться в отсутствии открытого огня, посторонних людей в радиусе 10 метров от ГРП, ШРП.'),
+(2, 'Известить оператора АДС об открытии дверей.'),
+(3, 'Проверить прибором на загазованность всех помещений ГРП.'),
+(4, 'Проверить по приборам давление газа до и после регулятора(ов)'),
+(5, 'Проверить по приборам перепад давления на фильтре (фильтрах)'),
+(6, 'Проверить по приборам температуру воздуха в помещении (если предусмотрено отопление)'),
+(7, 'Проконтролировать правильность положения рукояток взвода всех ПЗУ'),
+(8, 'Проверить отсутствие утечек газа с помощью приборов или мыльной эмульсии'),
+(9, 'Проверить исправность манометров путем кратковременного их отключения и посадки на \"ноль\"'),
+(10, 'Проверить состояние и работу электроосвещения'),
+(11, 'Проверить состояние и работу вентиляции'),
+(12, 'Проверить состояние и работу системы отопления'),
+(13, 'Визуально выявить трещины и неплотности стен, отделяющих основное и вспомогательное помещения'),
+(14, 'Осмотреть видимую часть заземляющего устройства'),
+(15, 'Проверить наличие и исправность первичных средств пожаротушения'),
+(16, 'Произвести внешний и внутренний осмотр здания'),
+(17, 'Произвести уборку помещения'),
+(18, 'После закрытия дверей сообщить оператору АДС об окончании работ');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `tasks`
 --
 
 CREATE TABLE `tasks` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL
+  `object` text,
+  `master` text,
+  `locksmith_one` text,
+  `locksmith_two` text,
+  `date_start` text,
+  `date_end` text,
+  `q1` text,
+  `q2` text,
+  `q3` text,
+  `q4` text,
+  `q5` text,
+  `q6` text,
+  `q7` text,
+  `q8` text,
+  `q9` text,
+  `q10` text,
+  `q11` text,
+  `q12` text,
+  `q13` text,
+  `q14` text,
+  `q15` text,
+  `q16` text,
+  `q17` text,
+  `q18` text,
+  `completed` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `tasks`
 --
 
-INSERT INTO `tasks` (`id`, `name`) VALUES
-(1, 'Перед открытием двери убедиться в отсутствии открытого огня, посторонних людей в радиусе 10 метров от ГРП, ШРП.'),
-(2, 'Известить оператора АДС об открытии дверей.'),
-(3, 'Проверить прибором на загазованность всех помещений ГРП.');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `worker`
---
-
-CREATE TABLE `worker` (
-  `id` int(11) NOT NULL,
-  `id_position` int(11) NOT NULL,
-  `fio` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `worker`
---
-
-INSERT INTO `worker` (`id`, `id_position`, `fio`) VALUES
-(1, 1, 'Клыбик С.И.'),
-(2, 1, 'Лахт И.И.'),
-(3, 2, 'Святненко А.П.'),
-(4, 2, 'Шук Ж.П.');
+INSERT INTO `tasks` (`id`, `object`, `master`, `locksmith_one`, `locksmith_two`, `date_start`, `date_end`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `completed`) VALUES
+(1, 'ГРП-1', 'Клыбик', 'Шук', NULL, '23.05.2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -149,15 +187,15 @@ ALTER TABLE `position`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `tasks`
+-- Индексы таблицы `questions`
 --
-ALTER TABLE `tasks`
+ALTER TABLE `questions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `worker`
+-- Индексы таблицы `tasks`
 --
-ALTER TABLE `worker`
+ALTER TABLE `tasks`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -168,7 +206,7 @@ ALTER TABLE `worker`
 -- AUTO_INCREMENT для таблицы `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `objects`
@@ -183,16 +221,16 @@ ALTER TABLE `position`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT для таблицы `questions`
+--
+ALTER TABLE `questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT для таблицы `worker`
---
-ALTER TABLE `worker`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
