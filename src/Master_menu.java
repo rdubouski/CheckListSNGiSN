@@ -36,8 +36,12 @@ public class Master_menu extends JFrame{
         completed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frameMaster_menu.dispose();
-                System.exit(0);
+                frameMaster_menu.setVisible(false);
+                try {
+                    new Master_complete();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 

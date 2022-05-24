@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class CheckListSNGiSN {
     public static void main(String[] args) throws SQLException {
-        new Master();
+        new Master_menu();
         /*final ResultSet[] res = {null};
         final String[] slogin = {null};
         final String[] spass = {null};

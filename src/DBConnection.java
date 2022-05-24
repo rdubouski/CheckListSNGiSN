@@ -39,7 +39,7 @@ public class DBConnection {
         try {
             Connection dbConnection = getDBConnect();
             Statement stat = dbConnection.createStatement();
-            stat.executeUpdate(sqlquery);
+            stat.executeQuery(sqlquery);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
