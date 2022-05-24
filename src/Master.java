@@ -15,8 +15,10 @@ public class Master extends JFrame {
     JLabel lobject;
     JComboBox equipment;
     JLabel lequipment;
-    JComboBox team;
-    JLabel lteam;
+    JComboBox team1;
+    JLabel lteam1;
+    JComboBox team2;
+    JLabel lteam2;
     JComboBox teamMaster;
     JLabel lteamMaster;
     JButton save;
@@ -81,9 +83,9 @@ public class Master extends JFrame {
         teamMaster = new JComboBox(itemsteamMaster);
         teamMaster.setBounds(50, 100, 100, 30);
 
-        lteam = new JLabel();
-        lteam.setBounds(200, 80, 100, 20);
-        lteam.setText("Бригада");
+        lteam1 = new JLabel();
+        lteam1.setBounds(200, 80, 100, 20);
+        lteam1.setText("Слесарь1");
         res = DBConnection.getdatabase("SELECT id_position, fio FROM login;");
         String[] itemsteam = new String[2];
         i = 0;
@@ -93,8 +95,23 @@ public class Master extends JFrame {
                 i++;
             }
         }
-        team = new JComboBox(itemsteam);
-        team.setBounds(200, 100, 100, 30);
+        team1 = new JComboBox(itemsteam);
+        team1.setBounds(200, 100, 100, 30);
+
+        lteam2 = new JLabel();
+        lteam2.setBounds(350, 80, 100, 20);
+        lteam2.setText("Слесарь2");
+        res = DBConnection.getdatabase("SELECT id_position, fio FROM login;");
+        String[] itemsteam2 = new String[2];
+        i = 0;
+        while (res.next()) {
+            if (res.getInt("id_position") == 2) {
+                itemsteam2[i] = res.getString("fio");
+                i++;
+            }
+        }
+        team2 = new JComboBox(itemsteam2);
+        team2.setBounds(350, 100, 100, 30);
 
         final String[] query = {null};
         save = new JButton("Создать");
@@ -102,11 +119,11 @@ public class Master extends JFrame {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                query[0] = "INSERT INTO tasks (object, master, locksmith_one, date_start) VALUE ('" + object.getSelectedItem() + "', '" + teamMaster.getSelectedItem() + "', '" + team.getSelectedItem() + "', '" + date.getText() + "');";
+                query[0] = "INSERT INTO tasks (object, master, locksmith_one, locksmith_two, date_start) VALUE ('" + object.getSelectedItem() + "', '" + teamMaster.getSelectedItem() + "', '" + team1.getSelectedItem() + "', '" + team2.getSelectedItem() + "', '" + date.getText() + "');";
                 System.out.println(query[0]);
                 DBConnection.exequery(query[0]);
                 JOptionPane.showMessageDialog(null,
-                        "Сохранено",
+                        "Создано",
                         "Чек лист СНГиСН",
                         JOptionPane.INFORMATION_MESSAGE);
                 frameMaster.setVisible(false);
@@ -127,13 +144,15 @@ public class Master extends JFrame {
         frameMaster.add(ldate);
         frameMaster.add(lobject);
         frameMaster.add(lequipment);
-        frameMaster.add(lteam);
+        frameMaster.add(lteam1);
+        frameMaster.add(lteam2);
         frameMaster.add(lteamMaster);
         frameMaster.add(date);
         frameMaster.add(object);
         frameMaster.add(equipment);
         frameMaster.add(teamMaster);
-        frameMaster.add(team);
+        frameMaster.add(team1);
+        frameMaster.add(team2);
         frameMaster.add(save);
         frameMaster.add(cancel);
         frameMaster.setVisible(true);
